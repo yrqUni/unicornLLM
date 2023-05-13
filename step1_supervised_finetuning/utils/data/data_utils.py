@@ -66,17 +66,15 @@ def create_dataset_split(current_dataset, raw_dataset, tokenizer, max_seq_len=51
                 {"from": "assistant", "value": "不好意思，我无法回答你的问题，因为我不知道你的位置信息，同时我目前还无法获取到最新的天气信息。"}
             ]
         }
-        tokenizer_bloomz.encode("你好，有什么可以帮助你的吗？") == [41381, 355, 37242, 205599, 7336, 10468]
-        tokenizer_llama.encode("你好，有什么可以帮助你的吗？") == [1, 29871, 30919, 31076, 30214, 30417, 231, 190, 131, 31882, 30682, 30651, 232, 187, 177, 31931, 30919, 30210, 232, 147, 154, 30882]
         '''
-
         conversation = ''
         input_ids = []
         labels = []
         for idx, sentence in enumerate(source):
             sentence_from = sentence["from"].lower()
             # 使用本函数注释的样本格式
-            sentence_value = raw_dataset.get_prompt_and_chosen_unicorn(sentence, sentence_from)
+            sentence_value = raw_dataset.get_prompt_and_chosen_vicuna(sentence, sentence_from)
+            # sentence_value = raw_dataset.get_prompt_and_chosen_unicorn(sentence, sentence_from)
             conversation += sentence_value
             sentence_ids = tokenizer.encode(sentence_value, add_special_tokens=False)  # do not add bos_token_id
             label = copy.deepcopy(sentence_ids) if sentence_from != 'human' else [IGNORE_INDEX] * len(sentence_ids)
@@ -105,7 +103,8 @@ def create_dataset_split(current_dataset, raw_dataset, tokenizer, max_seq_len=51
             input_ids, labels, conversation = _addrole_masklabel_tokenize(source, i)
             input_ids = input_ids[:max_seq_len - 1]
             labels = labels[:max_seq_len - 1]
-            if not any(x > IGNORE_INDEX for x in labels) or "Human" not in conversation:
+            # if not any(x > IGNORE_INDEX for x in labels) or "Human" not in conversation:
+            if not any(x > IGNORE_INDEX for x in labels) or "USR" not in conversation:
                 filter_nums += 1
                 continue
 
@@ -132,6 +131,7 @@ def create_dataset(local_rank, dataset_name, data_input_path, output_path, seed,
     eval_dataset = raw_dataset.get_eval_data()
     eval_dataset = create_dataset_split(eval_dataset, raw_dataset, tokenizer, max_seq_len)
     return train_dataset, eval_dataset
+
 
 def create_prompt_dataset(local_rank,
                           dataset_name,

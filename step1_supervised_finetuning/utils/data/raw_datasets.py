@@ -84,13 +84,9 @@ class unicorn(PromptRawDataset):
 {sample['output']}
 """
 
-    def get_prompt_and_chosen_vicuna(self, sample):
-        """
-            简化为user:xx, assistant:xx
-        """
-        return "A chat between a curious user and an artificial intelligence assistant. \nThe assistant gives helpful, detailed, and polite answers to the user's questions." + " " + "USR" + ": " + \
-               sample[
-                   'user'] + " " + "ASSISTANT" + ": " + sample['assistant']
-
+    def get_prompt_and_chosen_vicuna(self, sample, sentence_from):
+        return "A chat between a curious user and an artificial intelligence assistant. \nThe assistant gives helpful, detailed, and polite answers to the user's questions." + " " \
+            + "USR" + ": " + sample["value"] + " " + "ASSISTANT" + ": " if sentence_from == 'human' else sample["value"]
+    
     def get_prompt_and_chosen_unicorn(self, sample, sentence_from):
         return 'Human: ' + sample["value"] + '\n\nAssistant: ' if sentence_from == 'human' else sample["value"]
