@@ -1,5 +1,6 @@
 # 🦄️ unicornLLM
-unicorn 一个中文增强大模型研究项目，本项目由[严瑞卿](https://github.com/yrqUni)和[郑凌瀚](https://github.com/zlh1992)创建。
+unicornLLM 一个中文增强大模型研究项目，本项目由[严瑞卿](https://github.com/yrqUni)和[郑凌瀚](https://github.com/zlh1992)创建。
+* 本项目是unicorn的一部分，unicorn是一个研究项目集成体。
 
 ## 代码
 代码请进入各分支查看，main分支仅作入口展示页面使用。
