@@ -101,8 +101,8 @@ def create_dataset_split(current_dataset, raw_dataset, tokenizer, max_seq_len=51
         # for i, tmp_data in enumerate(current_dataset):
             source = raw_dataset.get_conversations(tmp_data)
             input_ids, labels, conversation = _addrole_masklabel_tokenize(source, i)
-            input_ids = input_ids[:max_seq_len - 1]
-            labels = labels[:max_seq_len - 1]
+            input_ids = input_ids[max_seq_len:]
+            labels = labels[max_seq_len:]
             # if not any(x > IGNORE_INDEX for x in labels) or "Human" not in conversation:
             if not any(x > IGNORE_INDEX for x in labels) or "USR" not in conversation:
                 filter_nums += 1
